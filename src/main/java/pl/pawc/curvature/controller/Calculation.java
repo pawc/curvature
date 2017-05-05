@@ -16,6 +16,7 @@ public class Calculation{
 	public ModelAndView calculate(HttpServletRequest request, HttpServletResponse response){
 		String h1String = request.getParameter("h1");
 		String dString = request.getParameter("d");
+		String planet = request.getParameter("planet");
 		
 		double h1;
 		double d;
@@ -24,12 +25,12 @@ public class Calculation{
 			h1 = Double.valueOf(h1String);
 			d = Double.valueOf(dString);
 		}
-		catch(NumberFormatException e){
-			 return new ModelAndView("resultPage", "result", "... error");
+		catch(Exception e){
+			return new ModelAndView("errorPage", "error", "Fill out the fields and use . instead of ,");
 		}
 		
-		Data data = new Data(h1, d);
-		String result = data.calculateCurvatureDrop();
+		Data data = new Data(h1, d, planet);
+		String[] result = data.calculateCurvatureDrop();
 		
 		return new ModelAndView("resultPage", "result", result);
 	}
